@@ -19,6 +19,7 @@ const Workout_1 = __importDefault(require("./models/Workout"));
 const app = (0, express_1.default)();
 const PORT = 8000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/octofit_db';
+const API_BASE_URL = (0, apiInfo_1.getApiBaseUrl)();
 // Middleware
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
@@ -39,12 +40,11 @@ app.use((req, res, next) => {
 });
 // Health check endpoint
 app.get('/api/health', (_req, res) => {
-    const baseUrl = (0, apiInfo_1.getApiBaseUrl)();
     res.json({
         status: 'ok',
         service: 'octofit-tracker-backend',
         timestamp: new Date().toISOString(),
-        baseUrl,
+        baseUrl: API_BASE_URL,
     });
 });
 // Route handlers
@@ -92,7 +92,7 @@ const startServer = async () => {
         await mongoose_1.default.connect(MONGODB_URI);
         console.log('✅ Connected to MongoDB at', MONGODB_URI);
         app.listen(PORT, '0.0.0.0', () => {
-            (0, apiInfo_1.logApiInfo)();
+            (0, apiInfo_1.logApiInfo)(API_BASE_URL);
         });
     }
     catch (error) {

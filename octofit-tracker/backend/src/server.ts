@@ -15,6 +15,14 @@ import Workout from './models/Workout';
 const app = express();
 const PORT = 8000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/octofit_db';
+function blab(): string {
+  const codespaceName = process.env.CODESPACE_NAME;
+  if (codespaceName) {
+    return `https://${codespaceName}-8000.app.github.dev`;
+  }
+  return 'http://localhost:8000';
+}
+const API_BASE_URL = blab();
 
 // Middleware
 app.use(express.json());
@@ -41,12 +49,11 @@ app.use((req, res, next) => {
 
 // Health check endpoint
 app.get('/api/health', (_req, res) => {
-  const baseUrl = getApiBaseUrl();
   res.json({
     status: 'ok',
     service: 'octofit-tracker-backend',
     timestamp: new Date().toISOString(),
-    baseUrl,
+    baseUrl: API_BASE_URL,
   });
 });
 
@@ -100,7 +107,7 @@ const startServer = async () => {
     console.log('✅ Connected to MongoDB at', MONGODB_URI);
 
     app.listen(PORT, '0.0.0.0', () => {
-      logApiInfo();
+      logApiInfo(API_BASE_URL);
     });
   } catch (error) {
     console.error('❌ MongoDB connection failed:', error);

@@ -12,8 +12,7 @@ export function getApiBaseUrl(): string {
 /**
  * Log API information including Codespaces URL if available
  */
-export function logApiInfo(): void {
-  const baseUrl = getApiBaseUrl();
+export function logApiInfo(baseUrl = getApiBaseUrl()): void {
   console.log(`\n🚀 OctoFit Tracker API`);
   console.log(`Base URL: ${baseUrl}`);
   console.log(`\n📝 Available Endpoints:`);
