@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon --watch src --exec ts-node src/server.ts",
+    "dev": "nodemon --watch dist --exec node dist/server.js",
+    "dev:watch": "tsc --watch --project tsconfig.json",
     "build": "tsc --project tsconfig.json",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "seed": "node dist/scripts/seed.js"
   },
   "dependencies": {
     "express": "^5.2.1",
